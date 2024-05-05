@@ -1,11 +1,16 @@
 
 resource "aws_instance" "web" {
-  ami           = "var.ami_type"
-  instance_type = "t2.small"
-  subnet_id = "subnet-021ec554a6cb695fb"
-  key_name ="new-virginia-key"
+  count         = 3
+  ami           = var.ami_type
+  instance_type = var.instance_type
+  key_name      = "docker-key"
+  subnet_id     = "subnet-0629e40dd5c72b6fe"
 
-  tags = {
-    Name = "HelloWorld"
-  }
+  tags = merge(
+    {
+      "Name" = "Instance-${count.index}"
+    },
+    local.common_tags
+  )
+
 }
